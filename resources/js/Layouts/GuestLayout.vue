@@ -5,9 +5,9 @@ import { Link } from '@inertiajs/vue3';
 
 <template>
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div>
+        <div class="w-60">
             <Link href="/">
-                <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+                <ApplicationLogo class="w-full h-full fill-current text-gray-500" />
             </Link>
         </div>
 
@@ -15,6 +15,7 @@ import { Link } from '@inertiajs/vue3';
             class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
         >
             <slot />
+
         </div>
     </div>
 </template>

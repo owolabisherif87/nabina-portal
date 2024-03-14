@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,22 +31,38 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            "role" => 'required|string|lowercase',
+            "position" => 'required|string',
+            "image" => 'nullable|image',
+            'password' => ['required', Rules\Password::defaults()],
         ]);
 
+        $image = "assets/placeholder.png";
+
+        if($request->hasFile("image")) {
+            $image = $request->file('image')->store('profile');
+        }
+
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->lastname . " " . $request->firstname,
             'email' => $request->email,
+            'role' => $request->role,
+            'position' => $request->position,
+            "image" => $image,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // return redirect(route('dashboard', absolute: false));
+
+        return redirect()->back();
     }
 }
